@@ -1,0 +1,3 @@
+openssl req -new -sha256 -nodes -out server.local.csr -newkey rsa:2048 -keyout server.local.key -subj "/C=US/ST=New Jersey/L=Princeton/O=Client One/OU=Dev/CN=client-1/emailAddress=robbie.a.freeman@gmail.com"
+
+openssl x509 -req -in server.local.csr -CAkey server.local.key -CAcreateserial -out server.crt -days 500 -sha256 -extensions "authorityKeyIdentifier=keyid,issuer\n basicConstraints=CA:FALSE\n keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment\n  subjectAltName=DNS:localhost"
