@@ -1,6 +1,6 @@
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/AzeuySdai40" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'AzeuySdai40',
 	(SELECT Id FROM Events WHERE Name = 'PGL Major Krak\xc3\xb3w 2017'),
 	(SELECT Id FROM Maps WHERE Name = 'de_inferno' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'Dosia'),
@@ -10,12 +10,14 @@ INSERT INTO Clips VALUES(
 	'1',
 	0,
 	0,
-	'{"he"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'he')],
+	DEFAULT
 );
+
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/yJifD2IEgx4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'yJifD2IEgx4',
 	(SELECT Id FROM Events WHERE Name = 'Europe Minor Championship - Boston 2018'),
 	(SELECT Id FROM Maps WHERE Name = 'de_mirage' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'BARBARR'),
@@ -25,12 +27,13 @@ INSERT INTO Clips VALUES(
 	'0',
 	4,
 	4,
-	'{"ak"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'ak')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/1NN1CjhH7rA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'1NN1CjhH7rA',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: Katowice 2015'),
 	(SELECT Id FROM Maps WHERE Name = 'de_inferno' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'Friberg'),
@@ -40,12 +43,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	2,
 	2,
-	'{"ak"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'ak')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/W9Jbo4Dv7vc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'W9Jbo4Dv7vc',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: Cologne 2015'),
 	(SELECT Id FROM Maps WHERE Name = 'de_dust2' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'KRIMZ'),
@@ -55,12 +59,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	3,
 	3,
-	'{"ak"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'ak')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/W9Jbo4Dv7vc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'W9Jbo4Dv7vc',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: Cologne 2015'),
 	(SELECT Id FROM Maps WHERE Name = 'de_dust2' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'NBK'),
@@ -70,12 +75,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	1,
 	0,
-	'{"knife"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'knife')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/cjOVXdarUTs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'cjOVXdarUTs',
 	(SELECT Id FROM Events WHERE Name = 'MLG Major Championship: Columbus 2016'),
 	(SELECT Id FROM Maps WHERE Name = 'de_mirage' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'Coldzera'),
@@ -85,12 +91,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	4,
 	0,
-	'{"awp"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/kUSN6u5CSRE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'kUSN6u5CSRE',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: Cologne 2016'),
 	(SELECT Id FROM Maps WHERE Name = 'de_cache' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'S1mple'),
@@ -100,12 +107,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	2,
 	2,
-	'{"awp"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/PO1G0bmWurc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'PO1G0bmWurc',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: New York 2016'),
 	(SELECT Id FROM Maps WHERE Name = 'de_dust2' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'S1mple'),
@@ -115,12 +123,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	1,
 	1,
-	'{"awp","p250"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp'),(SELECT Id FROM Weapons WHERE Name = 'p250')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/qLVIgyrRk28" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'qLVIgyrRk28',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: New York 2016'),
 	(SELECT Id FROM Maps WHERE Name = 'de_cbble' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'Snax'),
@@ -130,12 +139,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	4,
 	4,
-	'{"usp"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'usp')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/dmrIfz1TN00" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'dmrIfz1TN00',
 	(SELECT Id FROM Events WHERE Name = 'MLG Major Championship: Columbus 2016'),
 	(SELECT Id FROM Maps WHERE Name = 'de_cache' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'Hiko'),
@@ -145,12 +155,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	4,
 	4,
-	'{"m4a4"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'm4a4')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/4YyNMj7KrVs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'4YyNMj7KrVs',
 	(SELECT Id FROM Events WHERE Name = 'ELEAGUE Major: Boston 2018'),
 	(SELECT Id FROM Maps WHERE Name = 'de_inferno' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'GuardiaN'),
@@ -160,12 +171,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	1,
 	0,
-	'{"awp"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/jRWLI0W6PLk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'jRWLI0W6PLk',
 	(SELECT Id FROM Events WHERE Name = 'CEVO Season 7 Professional'),
 	(SELECT Id FROM Maps WHERE Name = 'de_inferno' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'KennyS'),
@@ -175,12 +187,13 @@ INSERT INTO Clips VALUES(
 	'0',
 	5,
 	0,
-	'{"awp"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/9WV1-AklbEQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'9WV1-AklbEQ',
 	(SELECT Id FROM Events WHERE Name = 'ESL Major Series One Katowice 2014'),
 	(SELECT Id FROM Maps WHERE Name = 'de_mirage' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'Snax'),
@@ -190,12 +203,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	3,
 	0,
-	'{"m4a1s"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'm4a1s')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/wHtSorLfAGA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'wHtSorLfAGA',
 	(SELECT Id FROM Events WHERE Name = 'CEVO Season 7 Professional'),
 	(SELECT Id FROM Maps WHERE Name = 'de_cache' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'Sgares'),
@@ -205,12 +219,13 @@ INSERT INTO Clips VALUES(
 	'1',
 	4,
 	0,
-	'{"awp"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'<iframe width="560" height="315" src="https://www.youtube.com/embed/XbKDbOhITSw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+	'XbKDbOhITSw',
 	(SELECT Id FROM Events WHERE Name = 'FACEIT Major: London 2018'),
 	(SELECT Id FROM Maps WHERE Name = 'de_overpass' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'TiziaN'),
@@ -220,5 +235,6 @@ INSERT INTO Clips VALUES(
 	'0',
 	4,
 	0,
-	'{"usp"}'
+	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'usp')],
+	DEFAULT
 );
