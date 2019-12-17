@@ -23,7 +23,7 @@ Steps to restore an instance to the Heroku instance from local instance:
 4. Upload backup to AWS S3 Bucket
 5. Right click on file, click Make Public
 6. Make sure the S3 profile is public itself
-7. Click on the item and copy the URL looking like "https://csgo-highlights-db.s3.us-east-2.amazonaws.com/name.backup"
+7. Click on the item and copy the URL looking like "https://csgo-highlights-db.s3.us-east-2.amazonaws.com/name.sql"
 8. enter w/o outer quotes in cmd: "pg:backups:restore "step7link" postgresql-convex-91631 -a clipd"
 9. enter w/o quotes to check if running properly: "heroku pg -a clipd"
 10. Start server if previously shut down for maintanence
