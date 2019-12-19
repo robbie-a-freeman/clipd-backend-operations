@@ -33,6 +33,11 @@ email - robbie.a.freeman@gmail.com
 username - clipd-official
 password - 72ED865568032
 
+Details for Twitch account:
+email - robbie.a.freeman@gmail.com
+username - clipdofficial
+password - f;PB2p:kHG&L
+
 Repo for downloading twitch clips:
 https://github.com/ihabunek/twitch-dl
 
