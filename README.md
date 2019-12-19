@@ -27,3 +27,9 @@ Steps to restore an instance to the Heroku instance from local instance:
 8. enter w/o outer quotes in cmd: "pg:backups:restore "step7link" postgresql-convex-91631 -a clipd"
 9. enter w/o quotes to check if running properly: "heroku pg -a clipd"
 10. Start server if previously shut down for maintanence
+
+Details for Reddit account:
+email - robbie.a.freeman@gmail.com
+username - clipd-official
+password - 72ED865568032
+
