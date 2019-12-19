@@ -185,7 +185,7 @@ CREATE TABLE Users (
 	Password TEXT NOT NULL,
 	SignUpDate DATE NOT NULL DEFAULT CURRENT_DATE,
 	SignInDate DATE NULL,
-	FavoriteWeapon WEAPON NULL
+	FavoriteWeapon INT REFERENCES Weapons NULL
 );
 
 CREATE TYPE STORY_TYPE AS ENUM('Player', 'Team', 'Event');
