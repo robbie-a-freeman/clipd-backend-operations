@@ -8,9 +8,9 @@ import winsound
 pils = []
 path = 'C:/Users/Robbie/Documents/GitHub/clipd-backend/data'
 while True:
-    print("work")
+    print("wait")
     time.sleep(1.0)
-    print("?")
+    print("snap")
     printscreen_pil =  ImageGrab.grab()
     pils.append(printscreen_pil)
     winsound.Beep(1000, 100)
@@ -19,5 +19,5 @@ while True:
 n = 0
 print("saving images to disc")
 for i in pils:
-    i.save(path + '/testScreen' + str(n) + '.png', "PNG")
+    i.save(path + '/mapName' + str(n) + '.png', "PNG")
     n = n + 1
