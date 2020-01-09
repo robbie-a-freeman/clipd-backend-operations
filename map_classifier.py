@@ -72,4 +72,4 @@ for arg in sys.argv[1:]:
         loss, acc = model.evaluate(test_images, test_labels)
         # Print out results here
     if arg == 'train':
-        history = model.fit(train_images, train_labels, epochs=EPOCHS, callbacks=[cp_callback], validation_data=(test_images, test_labels))
+        history = model.fit(train_images, train_labels, verbose=1, epochs=EPOCHS, callbacks=[cp_callback], validation_data=(test_images, test_labels))
