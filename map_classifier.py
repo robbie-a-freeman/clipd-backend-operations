@@ -41,20 +41,20 @@ else:
     os.mkdir("dataset/testing")
     os.mkdir("dataset/training")
     # Create class directories in testing folder
-    for class in CLASS_NAMES:
-        os.mkdir("dataset/testing/" + class)
+    for name in CLASS_NAMES:
+        os.mkdir("dataset/testing/" + name)
     # Move random 1/10th of photos of each map to testing directory
-    for class in CLASS_NAMES:
-        class_path = pathlib.Path("dataset/" + class)
+    for name in CLASS_NAMES:
+        class_path = pathlib.Path("dataset/" + name)
         dir_count = len(list(class_path.glob("*.jpg")))
         for x in range(dir_count//10):
             option = choice(os.listdir(str(class_path)))
-            src = "dataset/" + class + "/" + option
+            src = "dataset/" + name + "/" + option
             dst = "dataset/testing/" + option
             shutil.move(src, dst)
     # Move class directories into training folder
-    for class in CLASS_NAMES:
-        shutil.move("dataset/" + class, "dataset/training/" + class)
+    for name in CLASS_NAMES:
+        shutil.move("dataset/" + name, "dataset/training/" + name)
     # Reset data directory and image count
     data_dir = pathlib.Path("dataset/training")
     image_count = len(list(data_dir.glob("*/*.jpg")))
