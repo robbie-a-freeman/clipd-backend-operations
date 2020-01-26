@@ -21,7 +21,7 @@ if not os.path.isdir('dataset'):
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 # Set default number of epochs for training cycle
-EPOCHS = 50
+EPOCHS = 5
 # Change batch size to higher number
 BATCH_SIZE = 1
 IMG_HEIGHT = 360
@@ -32,7 +32,7 @@ if os.path.isdir('dataset/testing') and os.path.isdir('dataset/training'):
     data_dir = pathlib.Path("dataset/training")
     # Count number of images for doing training
     image_count = len(list(data_dir.glob("*/*.jpg")))
-    CLASS_NAMES = np.array([item.name for item in data_dir_temp.glob("*") if item.name != '.DS_Store'])
+    CLASS_NAMES = np.array([item.name for item in data_dir.glob("*") if item.name != '.DS_Store'])
 else:
     data_dir = pathlib.Path("dataset")
     image_count = len(list(data_dir.glob("*/*.jpg")))
@@ -50,7 +50,7 @@ else:
         for x in range(dir_count//10):
             option = choice(os.listdir(str(class_path)))
             src = "dataset/" + name + "/" + option
-            dst = "dataset/testing/" + option
+            dst = "dataset/testing/" + name + "/" + option
             shutil.move(src, dst)
     # Move class directories into training folder
     for name in CLASS_NAMES:
@@ -58,6 +58,10 @@ else:
     # Reset data directory and image count
     data_dir = pathlib.Path("dataset/training")
     image_count = len(list(data_dir.glob("*/*.jpg")))
+
+data_dir_testing = pathlib.Path("dataset/testing")
+image_count_testing = len(list(data_dir.glob("*/*.jpg")))
+STEPS_PER_EPOCH_TESTING = np.ceil(image_count_testing/BATCH_SIZE)
 
 STEPS_PER_EPOCH = np.ceil(image_count/BATCH_SIZE)
 
@@ -86,6 +90,7 @@ def decode_img(img):
 
 def process_path(file_path):
     label = get_label(file_path)
+    label = tf.where(tf.equal(label, True))
     # load the raw data from the file as a string
     img = tf.io.read_file(file_path)
     img = decode_img(img)
@@ -171,18 +176,18 @@ def create_model():
     return model
 
 model = create_model()
-model.load_weights(checkpoint_path)
+if os.path.isfile(checkpoint_path):
+    model.load_weights(checkpoint_path)
 
-optlist, args = getopt.getopt(sys.argv[1:], ['help', 'epochs', 'batch', 'load', 'eval', 'train'])
+optlist, args = getopt.getopt(sys.argv[1:], 'h', ['epochs=', 'batch=', 'load', 'eval', 'train'])
 for option, arg in optlist:
-    if option == '--help':
-        print("Usage:\n --epochs [number epochs]\n --batch [batch size]\n --eval\n   Evaluates images in test directory and prints accuracy\n --train\n   Fits loaded model to training data using batch size and number of epochs")
+    if option == '-h':
+        print("Usage:\n --epochs=[number epochs]\n --eval\n   Evaluates images in test directory and prints accuracy\n --train\n   Fits loaded model to training data using number of epochs\nMust manually set batch size in file")
     if option == '--epochs':
         EPOCHS = int(arg)
-    if option == '--batch':
-        BATCH_SIZE = int(arg)
+        STEPS_PER_EPOCH = np.ceil(image_count/BATCH_SIZE)
     if option == '--eval':
-        results = model.evaluate(test_ds)
+        results = model.evaluate(test_ds, steps=STEPS_PER_EPOCH_TESTING)
         print('test loss, test acc:', results)
-    if arg == '--train':
-        history = model.fit(train_ds, verbose=1, epochs=EPOCHS, callbacks=[cp_callback], validation_data=test_ds)
+    if option == '--train':
+        history = model.fit(train_ds, verbose=1, epochs=EPOCHS, steps_per_epoch=STEPS_PER_EPOCH, callbacks=[cp_callback], validation_data=test_ds, validation_steps=STEPS_PER_EPOCH_TESTING)
