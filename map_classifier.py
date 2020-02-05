@@ -29,24 +29,32 @@ IMG_WIDTH = 640
 
 # Check if testing and training directories already exists
 if os.path.isdir('dataset/testing') and os.path.isdir('dataset/training'):
+    print("dataset/testing and dataset/training already exist, skipping dataset move")
     data_dir = pathlib.Path("dataset/training")
     # Count number of images for doing training
     image_count = len(list(data_dir.glob("*/*.jpg")))
     CLASS_NAMES = np.array([item.name for item in data_dir.glob("*") if item.name != '.DS_Store'])
 else:
+    print("Starting dataset move")
     data_dir = pathlib.Path("dataset")
     image_count = len(list(data_dir.glob("*/*.jpg")))
     CLASS_NAMES = np.array([item.name for item in data_dir.glob("*") if item.name != '.DS_Store'])
     # Create testing and training directories
+    print("Creating dataset/testing")
     os.mkdir("dataset/testing")
+    print("Creating datatset/training")
     os.mkdir("dataset/training")
     # Create class directories in testing folder
     for name in CLASS_NAMES:
+        print("Creating dataset/testing/" + name)
         os.mkdir("dataset/testing/" + name)
     # Move random 1/10th of photos of each map to testing directory
     for name in CLASS_NAMES:
+        print("Starting class: " + name)
         class_path = pathlib.Path("dataset/" + name)
         dir_count = len(list(class_path.glob("*.jpg")))
+        print("Total image count: " + str(dir_count))
+        print("Moving " + str(dir_count//10) + " images")
         for x in range(dir_count//10):
             option = choice(os.listdir(str(class_path)))
             src = "dataset/" + name + "/" + option
@@ -54,10 +62,12 @@ else:
             shutil.move(src, dst)
     # Move class directories into training folder
     for name in CLASS_NAMES:
+        print("Moving dataset/" + name + " to dataset/training/" + name)
         shutil.move("dataset/" + name, "dataset/training/" + name)
     # Reset data directory and image count
     data_dir = pathlib.Path("dataset/training")
     image_count = len(list(data_dir.glob("*/*.jpg")))
+    print("Finished dataset move")
 
 data_dir_testing = pathlib.Path("dataset/testing")
 image_count_testing = len(list(data_dir.glob("*/*.jpg")))
