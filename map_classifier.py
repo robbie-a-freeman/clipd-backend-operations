@@ -13,6 +13,16 @@ try:
     print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 except:
     print("Error finding GPUs")
+#tf.config.gpu.set_per_process_memory_fraction(0.75)
+#tf.config.gpu.set_per_process_memory_growth(False)
+physical_devices = tf.config.experimental.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_virtual_device_configuration(physical_devices[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=2048)])
+    #tf.config.experimental.set_memory_growth(physical_devices[0], False) 
+    print("Successfully limiting GPU memory growth")
+except: 
+    # Invalid device or cannot modify virtual devices once initialized. 
+    print("Error limiting GPU memory growth")
 
 if not os.path.isdir('dataset'):
     print("Error, could not find dataset folder")
@@ -23,7 +33,7 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 # Set default number of epochs for training cycle
 EPOCHS = 5
 # Change batch size to higher number
-BATCH_SIZE = 1
+BATCH_SIZE = 5
 IMG_HEIGHT = 360
 IMG_WIDTH = 640
 
@@ -32,12 +42,12 @@ if os.path.isdir('dataset/testing') and os.path.isdir('dataset/training'):
     print("dataset/testing and dataset/training already exist, skipping dataset move")
     data_dir = pathlib.Path("dataset/training")
     # Count number of images for doing training
-    image_count = len(list(data_dir.glob("*/*.jpg")))
+    image_count = len(list(data_dir.glob("*/*.png")))
     CLASS_NAMES = np.array([item.name for item in data_dir.glob("*") if item.name != '.DS_Store'])
 else:
     print("Starting dataset move")
     data_dir = pathlib.Path("dataset")
-    image_count = len(list(data_dir.glob("*/*.jpg")))
+    image_count = len(list(data_dir.glob("*/*.png")))
     CLASS_NAMES = np.array([item.name for item in data_dir.glob("*") if item.name != '.DS_Store'])
     # Create testing and training directories
     print("Creating dataset/testing")
@@ -52,7 +62,7 @@ else:
     for name in CLASS_NAMES:
         print("Starting class: " + name)
         class_path = pathlib.Path("dataset/" + name)
-        dir_count = len(list(class_path.glob("*.jpg")))
+        dir_count = len(list(class_path.glob("*.png")))
         print("Total image count: " + str(dir_count))
         print("Moving " + str(dir_count//10) + " images")
         for x in range(dir_count//10):
@@ -66,18 +76,18 @@ else:
         shutil.move("dataset/" + name, "dataset/training/" + name)
     # Reset data directory and image count
     data_dir = pathlib.Path("dataset/training")
-    image_count = len(list(data_dir.glob("*/*.jpg")))
+    image_count = len(list(data_dir.glob("*/*.png")))
     print("Finished dataset move")
 
 data_dir_testing = pathlib.Path("dataset/testing")
-image_count_testing = len(list(data_dir.glob("*/*.jpg")))
+image_count_testing = len(list(data_dir.glob("*/*.png")))
 STEPS_PER_EPOCH_TESTING = np.ceil(image_count_testing/BATCH_SIZE)
 
 STEPS_PER_EPOCH = np.ceil(image_count/BATCH_SIZE)
 
-list_train_ds = tf.data.Dataset.list_files(str(data_dir/'*/*.jpg'))
+list_train_ds = tf.data.Dataset.list_files(str(data_dir/'*/*.png'))
 test_dir = "dataset/testing"
-list_test_ds = tf.data.Dataset.list_files(test_dir + "/*/*.jpg")
+list_test_ds = tf.data.Dataset.list_files(test_dir + "/*/*.png")
 
 
 # Prints 5 random samples
@@ -92,7 +102,7 @@ def get_label(file_path):
 
 def decode_img(img):
     # convert the compressed string to a 3D uint8 tensor
-    img = tf.image.decode_jpeg(img, channels=3)
+    img = tf.image.decode_png(img, channels=3)
     # Use `convert_image_dtype` to convert to floats in the [0,1] range.
     img = tf.image.convert_image_dtype(img, tf.float32)
     # resize the image to the desired size.
@@ -145,7 +155,7 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_path,
         verbose=1,
         save_weights_only=True,
-        period=5)
+        period=1)
 
 # NORMALIZE INPUT IMAGES
 # train_images, test_images = train_images / 255.0, test_images / 255.0
