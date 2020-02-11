@@ -66,7 +66,6 @@ INSERT INTO Organizers VALUES(DEFAULT, 'Copenhagen Games');
 INSERT INTO Organizers VALUES(DEFAULT, 'Counter Pit');
 INSERT INTO Organizers VALUES(DEFAULT, 'Pantamera');
 
-
 -- Table to hold all the unique Maps
 CREATE TABLE Maps (
 	Id SERIAL PRIMARY KEY,
@@ -207,7 +206,7 @@ INSERT INTO Users VALUES(
 	crypt('pass', gen_salt('bf')),
 	DEFAULT,
 	NULL,
-	'mag7'
+	(SELECT Id FROM Weapons WHERE Name = 'mag7')
 );
 
 -- 6 cats: Casting, Significance, Intelligence, Atmosphere, Aim, Luck
