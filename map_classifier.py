@@ -17,7 +17,7 @@ except:
 #tf.config.gpu.set_per_process_memory_growth(False)
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 try:
-    tf.config.experimental.set_virtual_device_configuration(physical_devices[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=2048)])
+    tf.config.experimental.set_virtual_device_configuration(physical_devices[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4096)])
     #tf.config.experimental.set_memory_growth(physical_devices[0], False) 
     print("Successfully limiting GPU memory growth")
 except: 
@@ -33,7 +33,7 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 # Set default number of epochs for training cycle
 EPOCHS = 5
 # Change batch size to higher number
-BATCH_SIZE = 5
+BATCH_SIZE = 10
 IMG_HEIGHT = 360
 IMG_WIDTH = 640
 
@@ -52,7 +52,7 @@ else:
     # Create testing and training directories
     print("Creating dataset/testing")
     os.mkdir("dataset/testing")
-    print("Creating datatset/training")
+    print("Creating dataset/training")
     os.mkdir("dataset/training")
     # Create class directories in testing folder
     for name in CLASS_NAMES:
