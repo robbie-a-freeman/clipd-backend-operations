@@ -9,10 +9,6 @@ import pathlib
 import numpy as np
 import getopt
 
-checkpoint_path = "cp.ckpt.data"
-latest = tf.train.latest_checkpoint(checkpoint_path)
-print("recognize path?", latest)
-
 try:
     print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 except:
@@ -94,7 +90,7 @@ else:
     print("Finished dataset move")
 
 data_dir_testing = pathlib.Path("dataset/testing")
-image_count_testing = len(list(data_dir.glob("*/*.png")))
+image_count_testing = len(list(data_dir_testing.glob("*/*.png")))
 STEPS_PER_EPOCH_TESTING = np.ceil(image_count_testing/BATCH_SIZE)
 
 STEPS_PER_EPOCH = np.ceil(image_count/BATCH_SIZE)
@@ -103,6 +99,10 @@ list_train_ds = tf.data.Dataset.list_files(str(data_dir/'*/*.png'))
 test_dir = "dataset/testing"
 list_test_ds = tf.data.Dataset.list_files(test_dir + "/*/*.png")
 
+print("\n")
+print("image_count_testing:", image_count_testing)
+print("STEPS_PER_EPOCH_TESTING:", STEPS_PER_EPOCH_TESTING)
+print("\n")
 
 # Prints 5 random samples
 #for f in list_train_ds.take(5):
@@ -161,7 +161,7 @@ train_ds = prepare_for_training(labeled_train_ds)
 test_ds = prepare_for_training(labeled_test_ds)
 
 # SET PATH VARIABLE FOR SAVING MODEL
-#checkpoint_path = "cp.ckpt"
+checkpoint_path = "modelCheckpoints/cp.ckpt"
 
 # Callback for setting checkpoints
 # Will resave weights every 1 epoch (period)
@@ -211,10 +211,10 @@ def create_model():
 
 model = create_model()
 # load the weights if they exist beforehand
+checkpoint_dir = os.path.dirname(checkpoint_path)
 latest = tf.train.latest_checkpoint(checkpoint_dir)
-if latest:
-    model.load_weights(latest)
-    print("Loaded weights successfully.")
+model.load_weights(latest)
+print("Loaded weights successfully.")
 
 optlist, args = getopt.getopt(sys.argv[1:], 'h', ['epochs=', 'batch=', 'load', 'eval', 'train'])
 for option, arg in optlist:
