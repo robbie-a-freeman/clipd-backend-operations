@@ -16,9 +16,19 @@ except:
 #tf.config.gpu.set_per_process_memory_fraction(0.75)
 #tf.config.gpu.set_per_process_memory_growth(False)
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
+tf.config.experimental.set_visible_devices(physical_devices[0], 'GPU')
 try:
-    tf.config.experimental.set_virtual_device_configuration(physical_devices[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=2048)])
-    #tf.config.experimental.set_memory_growth(physical_devices[0], False) 
+    #tf.config.experimental.set_virtual_device_configuration(physical_devices[0], [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=4096)])
+
+    from tensorflow.compat.v1 import ConfigProto
+    from tensorflow.compat.v1 import InteractiveSession
+    config = ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = 0.75
+    config.gpu_options.allow_growth = True
+    #tf.compat.v1.RunOptions(report_tensor_allocations_upon_oom = True)
+    session = InteractiveSession(config=config)
+
+    #tf.config.experimental.set_memory_growth(physical_devices[0], True) 
     print("Successfully limiting GPU memory growth")
 except: 
     # Invalid device or cannot modify virtual devices once initialized. 
@@ -33,7 +43,7 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 # Set default number of epochs for training cycle
 EPOCHS = 5
 # Change batch size to higher number
-BATCH_SIZE = 5
+BATCH_SIZE = 10
 IMG_HEIGHT = 360
 IMG_WIDTH = 640
 
@@ -52,7 +62,7 @@ else:
     # Create testing and training directories
     print("Creating dataset/testing")
     os.mkdir("dataset/testing")
-    print("Creating datatset/training")
+    print("Creating dataset/training")
     os.mkdir("dataset/training")
     # Create class directories in testing folder
     for name in CLASS_NAMES:
@@ -80,7 +90,7 @@ else:
     print("Finished dataset move")
 
 data_dir_testing = pathlib.Path("dataset/testing")
-image_count_testing = len(list(data_dir.glob("*/*.png")))
+image_count_testing = len(list(data_dir_testing.glob("*/*.png")))
 STEPS_PER_EPOCH_TESTING = np.ceil(image_count_testing/BATCH_SIZE)
 
 STEPS_PER_EPOCH = np.ceil(image_count/BATCH_SIZE)
@@ -89,6 +99,10 @@ list_train_ds = tf.data.Dataset.list_files(str(data_dir/'*/*.png'))
 test_dir = "dataset/testing"
 list_test_ds = tf.data.Dataset.list_files(test_dir + "/*/*.png")
 
+print("\n")
+print("image_count_testing:", image_count_testing)
+print("STEPS_PER_EPOCH_TESTING:", STEPS_PER_EPOCH_TESTING)
+print("\n")
 
 # Prints 5 random samples
 #for f in list_train_ds.take(5):
@@ -123,7 +137,7 @@ labeled_test_ds = list_test_ds.map(process_path, num_parallel_calls=AUTOTUNE)
 #    print("Image shape: ", image.numpy().shape)
 #    print("Label: ", label.numpy())
 
-def prepare_for_training(ds, cache=True, shuffle_buffer_size=1000):
+def prepare_for_training(ds, cache=False, shuffle_buffer_size=1000):
     # This is a small dataset, only load it once, and keep it in memory.
     # use `.cache(filename)` to cache preprocessing work for datasets that don't
     # fit in memory.
@@ -147,10 +161,10 @@ train_ds = prepare_for_training(labeled_train_ds)
 test_ds = prepare_for_training(labeled_test_ds)
 
 # SET PATH VARIABLE FOR SAVING MODEL
-checkpoint_path = "cp.ckpt"
+checkpoint_path = "modelCheckpoints/cp.ckpt"
 
 # Callback for setting checkpoints
-# Will resave weights every 5 epochs (period)
+# Will resave weights every 1 epoch (period)
 cp_callback = tf.keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_path,
         verbose=1,
@@ -186,7 +200,7 @@ def create_model():
 
     model.add(layers.Flatten())
     model.add(layers.Dense(240, activation='relu'))
-    model.add(layers.Dense(7, activation='softmax'))
+    model.add(layers.Dense(7, activation='softmax')) # softmax makes all answers add up to one
 
     model.summary()
 
@@ -196,8 +210,11 @@ def create_model():
     return model
 
 model = create_model()
-if os.path.isfile(checkpoint_path):
-    model.load_weights(checkpoint_path)
+# load the weights if they exist beforehand
+checkpoint_dir = os.path.dirname(checkpoint_path)
+latest = tf.train.latest_checkpoint(checkpoint_dir)
+model.load_weights(latest)
+print("Loaded weights successfully.")
 
 optlist, args = getopt.getopt(sys.argv[1:], 'h', ['epochs=', 'batch=', 'load', 'eval', 'train'])
 for option, arg in optlist:
@@ -211,3 +228,4 @@ for option, arg in optlist:
         print('test loss, test acc:', results)
     if option == '--train':
         history = model.fit(train_ds, verbose=1, epochs=EPOCHS, steps_per_epoch=STEPS_PER_EPOCH, callbacks=[cp_callback], validation_data=test_ds, validation_steps=STEPS_PER_EPOCH_TESTING)
+session.close()
