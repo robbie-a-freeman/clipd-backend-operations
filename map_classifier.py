@@ -216,7 +216,7 @@ latest = tf.train.latest_checkpoint(checkpoint_dir)
 model.load_weights(latest)
 print("Loaded weights successfully.")
 
-optlist, args = getopt.getopt(sys.argv[1:], 'h', ['epochs=', 'batch=', 'load', 'eval', 'train'])
+optlist, args = getopt.getopt(sys.argv[1:], 'h', ['epochs=', 'batch=', 'load', 'eval', 'train', 'predict'])
 for option, arg in optlist:
     if option == '-h':
         print("Usage:\n --epochs=[number epochs]\n --eval\n   Evaluates images in test directory and prints accuracy\n --train\n   Fits loaded model to training data using number of epochs\nMust manually set batch size in file")
@@ -228,4 +228,11 @@ for option, arg in optlist:
         print('test loss, test acc:', results)
     if option == '--train':
         history = model.fit(train_ds, verbose=1, epochs=EPOCHS, steps_per_epoch=STEPS_PER_EPOCH, callbacks=[cp_callback], validation_data=test_ds, validation_steps=STEPS_PER_EPOCH_TESTING)
+    if option == '--predict':
+        predictions = model.predict(test_ds, verbose=1, steps=1, callbacks=[cp_callback])
+        argmaxes = np.zeros(7)
+        print(predictions)
+        for a in predictions:
+            argmaxes[np.argmax(a)] = argmaxes[np.argmax(a)] + 1
+        print(argmaxes)
 session.close()
