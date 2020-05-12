@@ -191,11 +191,12 @@ plt.show()
 
 def create_model():
     model = models.Sequential()
-    model.add(layers.Conv2D(120, (10, 10), activation='relu', input_shape=(640,360,3)))
-    model.add(layers.AveragePooling2D((5, 5)))
-    model.add(layers.Conv2D(240, (10, 10), activation='relu'))
-    model.add(layers.AveragePooling2D((5, 5)))
-    model.add(layers.Conv2D(240, (10, 10), activation='relu'))
+    model.add(layers.Cropping2D(cropping=((160,160), (90,90)), input_shape=(640,360,3)))
+    model.add(layers.Conv2D(32, (5, 5), activation='relu', strides = 4))
+    model.add(layers.MaxPooling2D((3, 3)))
+    model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 2))
+    model.add(layers.MaxPooling2D((3, 3)))
+    model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 1))
 
 
     model.add(layers.Flatten())
@@ -216,7 +217,7 @@ latest = tf.train.latest_checkpoint(checkpoint_dir)
 model.load_weights(latest)
 print("Loaded weights successfully.")
 
-optlist, args = getopt.getopt(sys.argv[1:], 'h', ['epochs=', 'batch=', 'load', 'eval', 'train', 'predict'])
+optlist, args = getopt.getopt(sys.argv[1:], 'h', ['epochs=', 'batch=', 'load', 'eval', 'train'])
 for option, arg in optlist:
     if option == '-h':
         print("Usage:\n --epochs=[number epochs]\n --eval\n   Evaluates images in test directory and prints accuracy\n --train\n   Fits loaded model to training data using number of epochs\nMust manually set batch size in file")
@@ -228,11 +229,4 @@ for option, arg in optlist:
         print('test loss, test acc:', results)
     if option == '--train':
         history = model.fit(train_ds, verbose=1, epochs=EPOCHS, steps_per_epoch=STEPS_PER_EPOCH, callbacks=[cp_callback], validation_data=test_ds, validation_steps=STEPS_PER_EPOCH_TESTING)
-    if option == '--predict':
-        predictions = model.predict(test_ds, verbose=1, steps=1, callbacks=[cp_callback])
-        argmaxes = np.zeros(7)
-        print(predictions)
-        for a in predictions:
-            argmaxes[np.argmax(a)] = argmaxes[np.argmax(a)] + 1
-        print(argmaxes)
 session.close()

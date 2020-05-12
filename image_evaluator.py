@@ -65,12 +65,12 @@ class_names = ['inferno', 'dust_2', 'mirage', 'overpass', 'nuke', 'train', 'vert
 
 def create_model():
     model = models.Sequential()
-    model.add(layers.Conv2D(120, (10, 10), activation='relu', input_shape=(640,360,3)))
-    model.add(layers.AveragePooling2D((5, 5)))
-    model.add(layers.Conv2D(240, (10, 10), activation='relu'))
-    model.add(layers.AveragePooling2D((5, 5)))
-    model.add(layers.Conv2D(240, (10, 10), activation='relu'))
-
+    model.add(layers.Cropping2D(cropping=((160,160), (90,90)), input_shape=(640,360,3)))
+    model.add(layers.Conv2D(32, (5, 5), activation='relu', strides = 4))
+    model.add(layers.MaxPooling2D((3, 3)))
+    model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 2))
+    model.add(layers.MaxPooling2D((3, 3)))
+    model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 1))
 
     model.add(layers.Flatten())
     model.add(layers.Dense(240, activation='relu'))
