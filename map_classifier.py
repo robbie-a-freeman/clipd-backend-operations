@@ -174,7 +174,7 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(
 # NORMALIZE INPUT IMAGES
 # train_images, test_images = train_images / 255.0, test_images / 255.0
 
-# class_names = ['inferno', 'dust_2', 'mirage', 'cache', 'nuke', 'train', 'vertigo']
+# class_names = ['inferno', 'dust_2', 'mirage', 'overpass', 'nuke', 'train', 'vertigo']
 
 
 '''

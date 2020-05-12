@@ -45,8 +45,7 @@ def decode_imgs(file_path):
     files = pathlib.Path(file_path).glob("*.png")
     decoded = []
     for x in files:
-        img = tf.io.read_file(x)
-        img = decode_img(img)
+        img = tf.io.read_file(str(x))
         # convert the compressed string to a 3D uint8 tensor
         img = tf.image.decode_png(img, channels=3)
         # Use `convert_image_dtype` to convert to floats in the [0,1] range.
@@ -60,9 +59,9 @@ def most_frequent(List):
     return max(set(List), key = List.count) 
 
 # SET PATH VARIABLE FOR SAVING MODEL
-checkpoint_path = "modelCheckpoints/cp.ckpt"
+checkpoint_path = "data/modelCheckpoints/cp.ckpt"
 
-class_names = ['inferno', 'dust_2', 'mirage', 'cache', 'nuke', 'train', 'vertigo']
+class_names = ['inferno', 'dust_2', 'mirage', 'overpass', 'nuke', 'train', 'vertigo']
 
 def create_model():
     model = models.Sequential()
@@ -87,15 +86,26 @@ def create_model():
 
 model = create_model()
 
-optlist, args = getopt.getopt(sys.argv[1:], 'h', ['eval'])
+optlist, args = getopt.getopt(sys.argv[1:], 'he:')
 for option, arg in optlist:
-    if option == '--eval':
-        images = decode_imgs(arg)
-        output = model(images)
-        outs = []
-        for x in output:
-            outs.append(tf.argmax(x))
-        print(most_frequent(outs))
+    if option == '-e': #CLASS_NAMES = np.array([item.name for item in data_dir.glob("*") if item.name != '.DS_Store'])
+        #for f in pathlib.Path(arg).glob("*/") :
+        #   print(f)
+        for f in pathlib.Path(arg).glob("*/"):
+            images = decode_imgs(str(f))
+            outs = []
+            for a in images:
+                a = tf.expand_dims(a, axis=0)
+                output = model(a)
+                outs.append(output)
+            predictions = []
+            for x in outs:
+                predictions.append(tf.argmax(x[0]).numpy())
+            #for x in output:
+                #outs.append(tf.argmax(x))
+            map_guesses = np.unique(predictions, return_counts=True)
+            print(str(f), map_guesses)
+            #print(str(f), class_names[most_frequent(predictions)])
     elif option == '-h':
-        print("Usage:\n --eval [directory]")
+        print("Usage:\n --e [directory]")
 session.close()
