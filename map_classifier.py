@@ -41,7 +41,7 @@ if not os.path.isdir('dataset'):
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 # Set default number of epochs for training cycle
-EPOCHS = 5
+EPOCHS = 1
 # Change batch size to higher number
 BATCH_SIZE = 10
 IMG_HEIGHT = 360
@@ -192,11 +192,12 @@ plt.show()
 def create_model():
     model = models.Sequential()
     model.add(layers.Cropping2D(cropping=((160,160), (90,90)), input_shape=(640,360,3)))
-    model.add(layers.Conv2D(32, (5, 5), activation='relu', strides = 4))
+    model.add(layers.Conv2D(32, (8, 8), activation='relu', strides = 4))
     model.add(layers.MaxPooling2D((3, 3)))
     model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 2))
     model.add(layers.MaxPooling2D((3, 3)))
-    model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 1))
+    model.summary()
+    model.add(layers.Conv2D(64, (3, 3), activation='relu', strides = 1))
 
 
     model.add(layers.Flatten())

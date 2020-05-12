@@ -61,20 +61,22 @@ def most_frequent(List):
 # SET PATH VARIABLE FOR SAVING MODEL
 checkpoint_path = "data/modelCheckpoints/cp.ckpt"
 
-class_names = ['inferno', 'dust_2', 'mirage', 'overpass', 'nuke', 'train', 'vertigo']
+class_names = ['dust_2', 'inferno', 'mirage', 'nuke', 'overpass', 'train', 'vertigo']
 
 def create_model():
     model = models.Sequential()
     model.add(layers.Cropping2D(cropping=((160,160), (90,90)), input_shape=(640,360,3)))
-    model.add(layers.Conv2D(32, (5, 5), activation='relu', strides = 4))
-    model.add(layers.MaxPooling2D((3, 3)))
+    model.add(layers.Conv2D(32, (6, 6), activation='relu', strides = 3))
+    model.add(layers.MaxPooling2D((2, 2)))
     model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 2))
-    model.add(layers.MaxPooling2D((3, 3)))
-    model.add(layers.Conv2D(64, (5, 5), activation='relu', strides = 1))
+    model.add(layers.MaxPooling2D((2, 2)))
+
 
     model.add(layers.Flatten())
     model.add(layers.Dense(240, activation='relu'))
     model.add(layers.Dense(7, activation='softmax')) # softmax makes all answers add up to one
+
+    model.summary()
 
     try:
         model.load_weights(checkpoint_path)
@@ -100,12 +102,11 @@ for option, arg in optlist:
                 outs.append(output)
             predictions = []
             for x in outs:
+                #if x[0][tf.argmax(x[0])] > 0.8: <- for thresholding
                 predictions.append(tf.argmax(x[0]).numpy())
-            #for x in output:
-                #outs.append(tf.argmax(x))
             map_guesses = np.unique(predictions, return_counts=True)
-            print(str(f), map_guesses)
-            #print(str(f), class_names[most_frequent(predictions)])
+            #print(str(f), map_guesses)
+            print(str(f), class_names[most_frequent(predictions)])
     elif option == '-h':
         print("Usage:\n --e [directory]")
 session.close()

@@ -22,6 +22,8 @@ screenshot = test_dir + 'screenshots/Screenshot.png'
 # Threshold for matching an icon
 THRESH = 0.85
 
+# The icons we decompiled from CS:GO source files automatically retained the
+# extra .png, which as of now we are working around.
 pattern = re.compile('(.*)_icon-(.*)\.png\.png')
 def format_name(filename):
     out = pattern.search(filename)
@@ -154,4 +156,10 @@ def process_killfeed(image_path):
         
 
 
-print(process_killfeed(screenshot))
+#print(process_killfeed(screenshot))
+import glob
+import pathlib
+screenshots_path = 'data/image_evaluator_test'
+screenshots = pathlib.Path(screenshots_path).glob("*/*.png")
+for s in screenshots:
+    print(str(s), process_killfeed(str(s)))
