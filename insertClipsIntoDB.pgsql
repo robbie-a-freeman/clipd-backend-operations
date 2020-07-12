@@ -11,6 +11,7 @@ INSERT INTO Clips VALUES(
 	0,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'he')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'Sadokist' OR Alias = 'HenryG')],
 	DEFAULT
 );
 
@@ -28,6 +29,7 @@ INSERT INTO Clips VALUES(
 	4,
 	4,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'ak')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'Blu' OR Alias = 'UNKNOWN')],
 	DEFAULT
 );
 
@@ -44,12 +46,13 @@ INSERT INTO Clips VALUES(
 	2,
 	2,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'ak')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'Anders' OR Alias = 'seang@res' OR Alias = 'Deman')],
 	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'W9Jbo4Dv7vc',
+	'2V8mZfU7fpQ',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: Cologne 2015'),
 	(SELECT Id FROM Maps WHERE Name = 'de_dust2' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'KRIMZ'),
@@ -60,6 +63,7 @@ INSERT INTO Clips VALUES(
 	3,
 	3,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'ak')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'Anders' OR Alias = 'Deman' OR Alias = 'HenryG')],
 	DEFAULT
 );
 
@@ -76,6 +80,7 @@ INSERT INTO Clips VALUES(
 	1,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'knife')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'Anders')],
 	DEFAULT
 );
 
@@ -92,6 +97,7 @@ INSERT INTO Clips VALUES(
 	4,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	ARRAY[(SELECT Id FROM Casters WHERE Name = 'James Bardolph' OR Alias = 'ddk')],
 	DEFAULT
 );
 
@@ -108,12 +114,13 @@ INSERT INTO Clips VALUES(
 	2,
 	2,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	ARRAY[(SELECT Id FROM Casters WHERE Name = 'James Bardolph' OR Alias = 'ddk')],
 	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'PO1G0bmWurc',
+	'DXiDs6EYEJk',
 	(SELECT Id FROM Events WHERE Name = 'ESL One: New York 2016'),
 	(SELECT Id FROM Maps WHERE Name = 'de_dust2' AND CurrentBigVersion = '0'),
 	(SELECT Id FROM Players WHERE Alias = 'S1mple'),
@@ -124,6 +131,7 @@ INSERT INTO Clips VALUES(
 	1,
 	1,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp'),(SELECT Id FROM Weapons WHERE Name = 'p250')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'moses' OR Alias = 'Anders')],
 	DEFAULT
 );
 
@@ -140,6 +148,7 @@ INSERT INTO Clips VALUES(
 	4,
 	4,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'usp')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'Sadokist' OR Alias = 'HenryG')],
 	DEFAULT
 );
 
@@ -156,12 +165,13 @@ INSERT INTO Clips VALUES(
 	4,
 	4,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'm4a4')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'ddk')],
 	DEFAULT
 );
 
 INSERT INTO Clips VALUES(
 	DEFAULT,
-	'4YyNMj7KrVs',
+	'rM0S5w62cXM',
 	(SELECT Id FROM Events WHERE Name = 'ELEAGUE Major: Boston 2018'),
 	(SELECT Id FROM Maps WHERE Name = 'de_inferno' AND CurrentBigVersion = '1'),
 	(SELECT Id FROM Players WHERE Alias = 'GuardiaN'),
@@ -172,6 +182,7 @@ INSERT INTO Clips VALUES(
 	1,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	ARRAY[(SELECT Id FROM Casters WHERE Name = 'James Bardolph' OR Alias = 'ddk')],
 	DEFAULT
 );
 
@@ -188,6 +199,7 @@ INSERT INTO Clips VALUES(
 	5,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'csboxr' OR Alias = 'Vince')],
 	DEFAULT
 );
 
@@ -204,6 +216,7 @@ INSERT INTO Clips VALUES(
 	3,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'm4a1s')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'TosspoT')],
 	DEFAULT
 );
 
@@ -220,6 +233,7 @@ INSERT INTO Clips VALUES(
 	4,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'awp')],
+	ARRAY[(SELECT Id FROM Casters WHERE Alias = 'HenryG' OR Alias = 'megaman')],
 	DEFAULT
 );
 
@@ -236,5 +250,6 @@ INSERT INTO Clips VALUES(
 	4,
 	0,
 	ARRAY[(SELECT Id FROM Weapons WHERE Name = 'usp')],
+	ARRAY[(SELECT Id FROM Casters WHERE Name = 'James Bardolph' OR Alias = 'ddk')],
 	DEFAULT
 );

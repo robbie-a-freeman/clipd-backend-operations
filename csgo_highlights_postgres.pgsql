@@ -158,6 +158,42 @@ INSERT INTO Weapons VALUES(DEFAULT, 'fire', DEFAULT);
 INSERT INTO Weapons VALUES(DEFAULT, 'flash', DEFAULT);
 INSERT INTO Weapons VALUES(DEFAULT, 'smoke', DEFAULT);
 
+CREATE TABLE Casters (
+	Id SERIAL PRIMARY KEY,
+	Name VARCHAR NOT NULL,
+	Alias VARCHAR NULL,
+	AlternateAliases VARCHAR[] NULL
+);
+
+INSERT INTO Casters VALUES(DEFAULT, 'Matthew Trivett', 'Sadokist', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Anders Blume', 'Anders', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Mark Wilson', 'boq', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Rahim Abdullav', 'Babam', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Daniel Kapadia', 'ddk', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Dustin Mouret', 'dusT', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Alex Hawkins', 'Hawka', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Joseph Cunningham', 'heliumbrella', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'James Bardolph', 'James', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Alex Richardson', 'Machine', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Chad Burchill', 'SPUNJ', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Auguste Massonnat', 'Semmler', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Stuart Saw', 'TosspoT', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Henry Greer', 'HenryG', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Jason O''Toole', 'moses', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Tomi Kovanen', 'lurppis', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Sam Marine', 'DaZeD', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Jordan Gilbert', 'n0thing', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Duncan Shields', 'Thorin', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Scott Smith', 'SirScoots', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Sean Gares', 'seang@res', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Richard Lewis', NULL, NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Vince Hill', 'Vince', '{"Metuz"}');
+INSERT INTO Casters VALUES(DEFAULT, 'John Mullen', 'Blu', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Leigh Smith', 'Deman', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Cory Gilbert', 'megaman', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'Mohan Govindasamy', 'csboxr', NULL);
+INSERT INTO Casters VALUES(DEFAULT, 'UNKNOWN', 'UNKNOWN', NULL);
+
 CREATE TABLE Clips (
 	Id SERIAL PRIMARY KEY,
 	Code VARCHAR(16) NOT NULL,
@@ -171,6 +207,7 @@ CREATE TABLE Clips (
 	Kills INT CHECK (kills >= 0 AND kills <= 5),
 	ClutchKills INT CHECK (clutchkills >= 0 AND clutchkills <= 5),
 	Weapon INT[] NOT NULL,
+	Casters Caster[] NULL,
 	DateInserted DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
