@@ -13,7 +13,8 @@ CREATE TABLE Teams (
 	Id SERIAL PRIMARY KEY,
 	Alias VARCHAR(64) NOT NULL,
 	AlternateAliases VARCHAR(64) ARRAY NULL,
-	IsActive BOOLEAN NOT NULL DEFAULT '1'
+	IsActive BOOLEAN NOT NULL DEFAULT '1',
+	LineupIds INT[] NOT NULL
 );
 
 -- Table to hold all unique Tournament Organizers
@@ -23,14 +24,49 @@ CREATE TABLE Organizers (
 	EventSeries VARCHAR ARRAY NULL
 );
 
--- Table to hold all the unique Events
+-- Tables to hold all the unique Events and their information
 -- PrizePool is Varchar to maintain currency and precision
 CREATE TABLE Events (
 	Id SERIAL PRIMARY KEY,
 	Name VARCHAR NOT NULL,
 	Organizer INT REFERENCES Organizers NULL,
 	Location VARCHAR NULL,
-	PrizePool VARCHAR NULL,
+	PrizePool INT NULL,
+	EventStageIds INT[] NOT NULL,
+	StartDate DATE NULL,
+	EndDate DATE NULL
+);
+
+-- Scoreflow example: [8, 7, 8, 0]
+-- even indices are team 1, odd are team 2, pairs represent halves or OT halves
+CREATE TABLE Matches (
+	Id SERIAL PRIMARY KEY,
+	EventId INT REFERENCES EventStages NOT NULL,
+	EventStageId INT REFERENCES Events NOT NULL,
+	MapIds INT[] NOT NULL,
+	Team1 INT REFERENCES Teams NOT NULL,
+	Team2 INT REFERENCES Teams NOT NULL,
+	Lineup1 INT REFERENCES Lineups NOT NULL,
+	Lineup2 SERIAL REFERENCES Lineups NOT NULL,
+	ScoreFlow INT[] NOT NULL,
+	NextMatchId INT REFERENCES Matches NULL,
+	PreviousMatchIds INT[] NULL,
+	Date DATE NULL
+);
+
+CREATE TABLE Lineups (
+	Id SERIAL PRIMARY KEY,
+	PlayerIds INT[5] NOT NULL,
+	TeamIds INT[] NULL,
+	FormalizedStartDate DATE NOT NULL,
+	FormalizedEndDate DATE NULL
+);
+
+-- basically a contiguous collection of matches. A connected graph
+CREATE TABLE EventStages (
+	Id SERIAL PRIMARY KEY,
+	NominalMatchId SERIAL REFERENCES Matches NULL,
+	IsOnline BOOLEAN NULL,
 	StartDate DATE NULL,
 	EndDate DATE NULL
 );
