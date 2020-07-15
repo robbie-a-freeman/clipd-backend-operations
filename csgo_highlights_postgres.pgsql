@@ -54,6 +54,7 @@ CREATE TABLE Matches (
 	Date DATE NULL
 );
 
+-- does not contain coaches atm
 CREATE TABLE Lineups (
 	Id SERIAL PRIMARY KEY,
 	PlayerIds INT[5] NOT NULL,
