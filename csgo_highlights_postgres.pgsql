@@ -46,7 +46,7 @@ CREATE TABLE Matches (
 	MapIds INT[] NOT NULL,
 	Team1 INT REFERENCES Teams NOT NULL,
 	Team2 INT REFERENCES Teams NOT NULL,
-	Lineup1 INT REFERENCES Lineups NOT NULL,
+	Lineup1 SERIAL REFERENCES Lineups NOT NULL,
 	Lineup2 SERIAL REFERENCES Lineups NOT NULL,
 	ScoreFlow INT[] NOT NULL,
 	NextMatchId INT REFERENCES Matches NULL,
@@ -314,4 +314,15 @@ CREATE TABLE RatingAvgs (
 	UNIQUE (ClipId, RatingCategoryId),
 	Total INT NOT NULL DEFAULT 1,
 	Average FLOAT NOT NULL CHECK (average >= 0.0 AND average <= 5.0)
+);
+
+-- Keeps track of each of the kills tracked in clips
+CREATE TABLE Interactions (
+	Id SERIAL PRIMARY KEY,
+	WinnerId SERIAL REFERENCES Players,
+	LoserId SERIAL REFERENCES Players,
+	WeaponId SERIAL REFERENCES Weapons,
+	Clutch BOOLEAN NOT NULL,
+	HealthOfWinner INT NOT NULL,
+	Armor INT NOT NULL
 );
