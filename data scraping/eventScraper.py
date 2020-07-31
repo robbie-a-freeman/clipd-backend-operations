@@ -7,15 +7,51 @@ import requests
 
 
 # takes a page_content obj and fills out the page
+""" go into each event link and scrape more detailed information on:
+    - Lineups
+    - Matches
+    - Events
+    - Event Stages
+"""
 def process_event_page(page_content):
 
-    # id=Participants, then parent element (h2), then go two elements down, thenmake list of the following divs
-    # in each div, div -> div -> center -> b -> a.innerHTML
-    # for each div, find the only tbody, take its tds, for each td, take its a.innerHTML
+    # Lineups
+    # id=Participants, then parent element (h2), then go two elements down, then make list of the following divs
     lineups = []
-    for ()
+    lineupTeams = []
+    lineupLists = page_content.find(id = "Participants").parent.next_sibling.next_sibling.next_sibling.next_sibling.find_all("div", {"class" : "teamcard"})
+    # in each div -> center -> b -> a.innerHTML
+    for li in lineupLists:
+        # for each div, find the only tbody, take its tds, for each td, take its a.innerHTML
+        players = [""] * 6
+        lineupLinks = li.findChildren("a", recursive=True)
+        i = 2
+        for p in range(len(players) - 1):
+            players[p] = lineupLinks[i].contents[0]
+            i = i + 2
+        if len(lineupLinks) >= 13 and lineupLinks[12].contents[0] is not "":
+            players[5] = lineupLinks[12].contents[0]
+        lineups.append(players)
+        lineupTeams.append(lineupLinks[0].contents[0])
+    print("Lineups: ")
+    for li in range(len(lineups)):
+        print(lineups[li])
+        print(lineupTeams[li])
+
+    # Matches
+    
+
+def main():
+    event_page_response = requests.get("https://liquipedia.net/counterstrike/Cs_summit/6/Europe", timeout=5)
+    event_page_content = BeautifulSoup(event_page_response.content, "html.parser")
+    process_event_page(event_page_content)
+
+if __name__ == '__main__':
+    main()
 
 
+
+'''
 f = open("scraped commands/insertEventsIntoDB.pgsql", "w")
 # events: need Name, Organizer, Location, Prize Pool, Start Date, End Date
 links = ['https://liquipedia.net/counterstrike/S-Tier_Tournaments',\
@@ -66,7 +102,8 @@ for l in links:
 
             d = e.select("div[class*='divCell EventDetails Date']")[0]
             # how many months are there listed?
-            if d is not None and d.text is not '':
+            print(d.text)
+            if d is not None and d.text is not '' and 'Tournament Delayed' not in d.text:
                 firstM = "-1"
                 firstMIndex = -1
                 secondM = "-1"
@@ -130,18 +167,14 @@ for l in links:
             if result not in events: 
                 events.append(result)
 
-    """ go into each event link and scrape more detailed information on:
-        - Lineups
-        - Matches
-        - Events
-        - Event Stages
-    """
     for e in page_content.find_all("div", {"class": "divCell Tournament Header"}):
-        event_page_link = e.find_all("a")[-1]
+        partial_link = e.find_all("a")[-1]["href"]
+        print(partial_link )
+        event_page_link = "https://www.liquipedia.net" + partial_link
         event_page_response = requests.get(event_page_link, timeout=5)
         event_page_content = BeautifulSoup(event_page_response.content, "html.parser")
         process_event_page(event_page_content)
-
+''' '''
 # write the commands to file
 eventInsertCommands = ""
 for e in events:
@@ -161,4 +194,4 @@ for e in events:
     eventInsertCommands = ''.join([eventInsertCommands, "INSERT INTO Events VALUES(DEFAULT,\'", name, "\',", str(e[1]),",", location, ",\'", e[3], "\',", start, ",",  end, ");"])
 eventInsertCommands = str(eventInsertCommands.encode('utf8'))[2:-1]
 f.write(eventInsertCommands)
-f.close()
+f.close()'''
