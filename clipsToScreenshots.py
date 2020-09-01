@@ -22,7 +22,7 @@ def ocr_core(image):
 # false positives from tesseract such as underscores.
 def isNotEmpty(text):
     return not text.isspace() and len(text) >= 3 and text.isprintable()
-
+'''
 # Helper function that determines whether a given frame is a frame in which the
 # "Kill Feed" is updated
 def getKillFeed(frame, latestKillFeed):
@@ -33,7 +33,7 @@ def getKillFeed(frame, latestKillFeed):
 
     # read the text
     newKillFeed = ocr_core(killFeedImg)
-    return newKillFeed
+    return newKillFeed '''
 
 # evaluates the initial frame and looks for the following information:
 # - player names
@@ -43,6 +43,11 @@ def launchState(initIm, path_output_dir):
     # find team names
     teamNames = initIm.crop( (int(im.width * 9 / 10), 0, im.width, int(im.height / 10)) )
     cv2.imwrite(os.path.join(path_output_dir, 'init.png'), initIm)
+
+# scrape the values that don't change from the frame, and the locations of the
+# values
+def processInitialValues(image):
+    # get the team names
 
 
 
@@ -59,25 +64,25 @@ def video_to_frames(video, path_output_dir):
         success, image = vidcap.read()
         lastKillFeed = ''
         if success:
+            # determine whether to save image
+            if count % FRAME_INCREMENT == 0:
+                cv2.imwrite(os.path.join(path_output_dir, '%d.png') % count, image)
+            '''
             # if the text is similar enough to previous knowledge of kill feed, or if text is notdiscernably present, return false
             feed = getKillFeed(image, lastKillFeed)
             if feed:
                 print(feed)
-                print("hamming", textdistance.hamming(lastKillFeed, feed))
-
-            # determine whether to print image
-            if count % FRAME_INCREMENT == 0:
-                cv2.imwrite(os.path.join(path_output_dir, '%d.png') % count, image)
-                #print("used")
+                print("hamming", textdistance.hamming(lastKillFeed, feed))            
             elif feed and (textdistance.hamming(lastKillFeed, feed) >= 8 and isNotEmpty(feed)):
                 print("kill cap found")
                 lastKillFeed = feed
                 defeats = defeats + 1
                 cv2.imwrite(os.path.join(path_output_dir, 'killFeed%d.png') % defeats, image)
+            '''
             count += 1
         else:
             break
     cv2.destroyAllWindows()
     vidcap.release()
 
-video_to_frames('data/test/test_clip.mp4', 'data/test/screenshots')
+video_to_frames('data/sample_clip_set/1.mp4', 'data/test')
