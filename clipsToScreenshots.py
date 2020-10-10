@@ -67,18 +67,6 @@ def video_to_frames(video, path_output_dir):
             # determine whether to save image
             if count % FRAME_INCREMENT == 0:
                 cv2.imwrite(os.path.join(path_output_dir, '%d.png') % count, image)
-            '''
-            # if the text is similar enough to previous knowledge of kill feed, or if text is notdiscernably present, return false
-            feed = getKillFeed(image, lastKillFeed)
-            if feed:
-                print(feed)
-                print("hamming", textdistance.hamming(lastKillFeed, feed))            
-            elif feed and (textdistance.hamming(lastKillFeed, feed) >= 8 and isNotEmpty(feed)):
-                print("kill cap found")
-                lastKillFeed = feed
-                defeats = defeats + 1
-                cv2.imwrite(os.path.join(path_output_dir, 'killFeed%d.png') % defeats, image)
-            '''
             count += 1
         else:
             break

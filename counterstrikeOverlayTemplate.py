@@ -25,6 +25,7 @@ secondPoint = (-1., -1.)
 overlayElement = None
 activeOverlay = cot.ClipOverlayTemplate()
 imagePanelReference = None
+buttonPanelReference = None
 
 
 def activateMouseListener(imageFrame):
@@ -58,29 +59,48 @@ def btnListener(btn, element, imageFrame):
         isBtnActivated = True
 
 
-# TODO save
 def save():
+
+    global buttonPanelReference
+
     # initialize template
     print('Saving: ', activeOverlay.__dict__)
-    activeOverlay.saveToFile(None)
+    saveName = buttonPanelReference.saveNameField.get()
+    if saveName.endswith('.cot'):
+        activeOverlay.saveToFile(saveName)
+    else:
+        activeOverlay.saveToFile(saveName + '.cot')
     # call save w/o filename
 
 
-# TODO load
 def load():
     global activeOverlay
+    global queuedPoint
+    global secondPoint
+    global overlayElement
+    global imagePanelReference
 
     # initialize template
     filename = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select file")
     activeOverlay = cot.loadFromFile(filename)
     print('Loading: ', activeOverlay.__dict__)
     # TODO update the individual overlay btns and objects for each existing entry in the file
+    for k in activeOverlay.__dict__:
+        e = activeOverlay.__dict__[k]
+        queuedPoint = e.p1
+        secondPoint = e.p2
+        overlayElement = e
+        imagePanelReference.syncOverlayTemplateElement()
+        if overlayElement.p1[0] > 0 and overlayElement.p1[1] > 0 and overlayElement.p2[0] > 0 and overlayElement.p2[1] > 0:
+            imagePanelReference.changeRectColor(overlayElement.name, COLOR_COMPLETE)
+        buttonPanelReference.syncAllBtns(activeOverlay.__dict__)
 
 
 class ButtonFrame(Frame):
 
     imageFrame = None
     overlays = []
+    btns = []
 
     def __init__(self, imageF):
         super().__init__()
@@ -94,7 +114,6 @@ class ButtonFrame(Frame):
     def initUI(self):
 
         components = ['team1', 'team2', 'score1', 'score2', 'currRound', 'mapScore1', 'mapScore2']
-        btns = []
 
         for c in range(len(components)):
             cName = components[c]
@@ -103,7 +122,7 @@ class ButtonFrame(Frame):
             btn.grid(row=(c % 20), column=0)
             btn['command'] = partial(btnListener, btn, overlay, self.imageFrame)
             self.overlays.append(overlay)
-            btns.append(btn)
+            self.btns.append(btn)
 
         components = []
         for i in range(10):
@@ -125,17 +144,20 @@ class ButtonFrame(Frame):
             btn.grid(row=(c % 20), column=int(c * 5 / len(components))+1)
             btn['command'] = partial(btnListener, btn, overlay, self.imageFrame)
             self.overlays.append(overlay)
-            btns.append(btn)
+            self.btns.append(btn)
+
+        self.saveNameField = Entry(self, text='.cot', fg='black')
+        self.saveNameField.grid(row=25, column=0)
 
         btn = Button(self, text='save', fg='black')
-        btn.grid(row=25, column=0)
+        btn.grid(row=25, column=1)
         btn['command'] = partial(save)
-        btns.append(btn)
+        self.btns.append(btn)
 
         btn = Button(self, text='load', fg='black')
-        btn.grid(row=25, column=1)
+        btn.grid(row=25, column=2)
         btn['command'] = partial(load)
-        btns.append(btn)
+        self.btns.append(btn)
 
         # TODO button to cut down on redundancy
         def clonePlayerMappings():
@@ -144,6 +166,15 @@ class ButtonFrame(Frame):
         cpm = Button(self, text='clone player mappings', fg='black')
         cpm['command'] = partial(clonePlayerMappings)
         cpm.grid(row=21, columns=3)
+
+    def syncAllBtns(self, loadedElements):
+
+        global imagePanelReference
+
+        for b in self.btns:
+            if b['text'] is not 'save' and b['text'] is not 'load': # all overlay buttons
+                if b['text'] in loadedElements:
+                    b['fg'] = COLOR_COMPLETE
 
 
 class ImageFrame(Frame):
@@ -250,6 +281,7 @@ class ImageFrame(Frame):
 
 def main():
     global imagePanelReference
+    global buttonPanelReference
 
     root = Tk()
     f1 = ImageFrame()
@@ -259,6 +291,7 @@ def main():
     root.title('CS:GO Clip\'d Template Creation Tool')
     root.geometry(str(1700) + 'x' + str(900) + '+0+0')
     imagePanelReference = f1
+    buttonPanelReference = f2
     root.mainloop()
 
 if __name__ == '__main__':
